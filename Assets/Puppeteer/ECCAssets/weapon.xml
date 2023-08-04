@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+  <struct id="1">
+    <variable name="attackRange" type="float">15</variable><!-- 索敌距离 -->
+    <variable name="magazineSize" type="int">20</variable><!-- 弹夹容量 -->
+	<variable name="reloadTime" type="float">2</variable>
+	<variable name="fireRate" type="float">0.2</variable>
+	<variable name="hurt" type="int">1</variable>
+	<variable name="hurtRange" type="int">0</variable>
+	<variable name="speed" type="float">20</variable>
+	<variable name="maximumRange" type="float">20</variable><!-- 子弹最远飞多远 -->
+	<variable name="bulletPrefab" type="string">FX_Bullet</variable>
+	<variable name="bulletHitEffect" type="string">FX_Bullet_Hit</variable>
+  </struct>
+  <struct id="2">
+    <variable name="attackRange" type="float">15</variable>
+    <variable name="magazineSize" type="int">20</variable>
+	<variable name="reloadTime" type="float">2</variable>
+	<variable name="fireRate" type="float">0.4</variable>
+	<variable name="hurt" type="int">1</variable>
+	<variable name="hurtRange" type="int">0</variable>
+	<variable name="speed" type="float">15</variable>
+	<variable name="maximumRange" type="float">20</variable>
+	<variable name="bulletPrefab" type="string">FX_Bullet_Enemy</variable>
+	<variable name="bulletHitEffect" type="string">FX_Bullet_Hit</variable>
+  </struct>
+    <struct id="3">
+    <variable name="attackRange" type="float">20</variable>
+    <variable name="magazineSize" type="int">1</variable>
+	<variable name="reloadTime" type="float">2</variable>
+	<variable name="fireRate" type="float">2</variable>
+	<variable name="hurt" type="int">1</variable>
+	<variable name="hurtRange" type="int">5</variable>
+	<variable name="speed" type="float">20</variable>
+	<variable name="maximumRange" type="float">30</variable>
+	<variable name="bulletPrefab" type="string">FX_Missile</variable>
+	<variable name="bulletHitEffect" type="string">FX_Missile_Hit</variable>
+  </struct>
+</config>
