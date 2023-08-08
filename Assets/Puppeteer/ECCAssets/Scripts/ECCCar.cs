@@ -8,7 +8,7 @@ using System.Reflection;
 
 namespace EndlessCarChase
 {
-    public struct WeaponXml
+/*    public struct WeaponXml
     {
         public float attackRange;    //可以攻击的圆形范围
         public int magazineSize;      //弹夹容量
@@ -21,7 +21,7 @@ namespace EndlessCarChase
         public float maximumRange;    //最大射程
         public string bulletPrefab;
         public string bulletHitEffect;
-    }
+    }*/
 
     public class ECCCar : MonoBehaviour
     {
@@ -116,7 +116,20 @@ namespace EndlessCarChase
             {
                 if(int.TryParse(number,out int res))
                 {
-                    XmlDocument xmlDoc = new XmlDocument();
+                    WeaponCfg weaponCfg = WeaponCfgMgr.Instance.GetTemplateByID(res);
+                    if (res == 1 || res == 2)
+                    {
+                        WeaponGun weaponGun = new WeaponGun(weaponCfg);
+                        listWeapon.Add(weaponGun);
+                    }
+                    else if(res == 3)
+                    {
+                        WeaponMissile weaponMissile = new WeaponMissile(weaponCfg);
+                        listWeapon.Add(weaponMissile);
+                    }
+
+
+/*                    XmlDocument xmlDoc = new XmlDocument();
                     xmlDoc.Load("Assets/Puppeteer/ECCAssets/weapon.xml");
                     XmlNodeList structNodes = xmlDoc.SelectNodes("/config/struct");
                     foreach (XmlNode structNode in structNodes)
@@ -162,7 +175,7 @@ namespace EndlessCarChase
                                 }
                             }                       
                         }                 
-                    }
+                    }*/
                 }
             }
         }
@@ -282,7 +295,7 @@ namespace EndlessCarChase
             }
 
             // If we have no ground object assigned, or it is turned off, then cars will use raycast to move along terrain surfaces
-                if ( gameController.groundObject == null || gameController.groundObject.gameObject.activeSelf == false )
+            if ( gameController.groundObject == null || gameController.groundObject.gameObject.activeSelf == false )
             { 
                 DetectGround();
             }
@@ -400,48 +413,31 @@ namespace EndlessCarChase
             }
         }
 
-        /// <summary>
-        /// Is executed when this obstacle touches another object with a trigger collider
-        /// </summary>
-        /// <param name="other"><see cref="Collider"/></param>
         void OnTriggerStay(Collider other)
         {
-            // If the hurt delay is over, and this car was hit by another car, damage it
             if ( hurtDelayCount <= 0  && other.GetComponent<ECCCar>() )
             {
-                // Reset the hurt delay
                 hurtDelayCount = hurtDelay;
 
-                // Damage the car
                 other.GetComponent<ECCCar>().ChangeHealth(-damage);
 
-                // If there is a hit effect, create it
                 if (health - damage > 0 && hitEffect) Instantiate(hitEffect, transform.position, transform.rotation);
             }
         }
 
-        /// <summary>
-        /// Changes the lives of the player. If lives reach 0, it's game over
-        /// </summary>
-        /// <param name="changeValue"></param>
         public void ChangeHealth(float changeValue)
         {
-            // Change the health value
             health += changeValue;
 
-            // Limit the value of the health to the maximum allowed value
             if (health > healthMax) health = healthMax;
 
-            // Update the value in the health bar, if it exists
             if ( healthBar )
             {
                 healthBarFill.fillAmount = health / healthMax;
             }
 
-            // If this is the player car, play the shake animation
             if (changeValue < 0 && gameController.playerObject == this) Camera.main.transform.root.GetComponent<Animation>().Play();
 
-            // If health reaches 0, the car dies
             if (health <= 0)
             {
                 if (gameController.playerObject && gameController.playerObject != this)
@@ -453,49 +449,35 @@ namespace EndlessCarChase
                     Die();
                 }
 
-                // If this is the player car, trigger the GameOver event
                 if (gameController.playerObject && gameController.playerObject == this)
                 {
                     gameController.SendMessage("GameOver", 1.2f);
 
-                    // Play a slowmotion effect
                     Time.timeScale = 0.5f;
                 }
             }
 
-            // Update the health bar 
             if ( gameController.playerObject && gameController.playerObject == this && gameController.healthCanvas)
             {
-                // Update the health bar based on the health we have
                 if (gameController.healthCanvas.Find("Full")) gameController.healthCanvas.Find("Full").GetComponent<Image>().fillAmount = health / healthMax;
 
                 if (gameController.healthCanvas.Find("Text")) gameController.healthCanvas.Find("Text").GetComponent<Text>().text = health.ToString();
 
-                // Play the animation of the health icon
                 if (gameController.healthCanvas.GetComponent<Animation>()) gameController.healthCanvas.GetComponent<Animation>().Play();
             }
         }
 
-        /// <summary>
-        /// Kill the car and create a death effect
-        /// </summary>
         public void Die()
         {
-            // Create a death effect at the position of the player
             if (deathEffect) Instantiate(deathEffect, transform.position, transform.rotation);
 
-            // Remove the player from the game
             Destroy(gameObject);
         }
 
-        /// <summary>
-        /// Make the car lose control for a second, and then kill it
-        /// </summary>
         public void DelayedDie()
         {
             //chaseTarget = null;
 
-            // Add all wheels as part of the chasis to make sure they flip over with it
             for (index = 0; index < wheels.Length; index++)
             {
                 wheels[index].transform.SetParent(chassis);
@@ -512,26 +494,19 @@ namespace EndlessCarChase
             Invoke("Die", UnityEngine.Random.Range(0,0.8f));
         }
 
-        /// <summary>
-        /// Detects the terrain under the car and aligns it to it
-        /// </summary>
         public void DetectGround()
         {
-            // Cast a ray to the ground below
             Ray carToGround = new Ray(thisTransform.position + Vector3.up * 10, -Vector3.up * 20);
 
-            // Detect terrain under the car
             if (Physics.Raycast(carToGround, out groundHitInfo, 20, gameController.groundLayer))
             {
                 //transform.position = new Vector3(transform.position.x, groundHitInfo.point.y, transform.position.z);
             }
             
-            // Set the position of the car along the terrain
             thisTransform.position = new Vector3(thisTransform.position.x, groundHitInfo.point.y + 0.1f, thisTransform.position.z);
 
             RaycastHit hit;
 
-            // Detect a point along the terrain in front of the car, so that we can make the car rotate accordingly
             if (Physics.Raycast(thisTransform.position + Vector3.up * 5 + thisTransform.forward * 1.0f, -10 * Vector3.up, out hit, 100, gameController.groundLayer))
             {
                 forwardPoint = hit.point;
@@ -541,7 +516,6 @@ namespace EndlessCarChase
                 forwardPoint = new Vector3(thisTransform.position.x, gameController.groundObject.position.y, thisTransform.position.z);
             }
 
-            // Make the car look at the point in front of it along the terrain
             thisTransform.Find("Base").LookAt(forwardPoint);
         }
 

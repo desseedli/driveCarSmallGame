@@ -7,15 +7,20 @@ public class WeaponGun:WeaponBase
 {
     public Transform targetTrs;
 
-    public WeaponGun(WeaponXml _weaponXml)
+/*    public WeaponGun(WeaponXml _weaponXml)
     {
         weaponXml = _weaponXml;
+    }*/
+
+    public WeaponGun(WeaponCfg _weaponCfg)
+    {
+        weaponCfg = _weaponCfg;
     }
 
     public override void Shoot()
     {
         base.Shoot();
-        GameObject obj = gameController.dictObjectPool[weaponXml.bulletPrefab].GetObject();
+        GameObject obj = gameController.dictObjectPool[weaponCfg.bulletPrefab].GetObject();
         obj.transform.position = new Vector3(holderTrs.position.x, holderTrs.position.y + 0.25f, holderTrs.position.z);
         BulletNormal bulletNormal = obj.GetComponent<BulletNormal>();
         if(bulletNormal == null)
@@ -24,7 +29,7 @@ public class WeaponGun:WeaponBase
             bulletNormal = obj.AddComponent<BulletNormal>();
         }
        
-        bulletNormal.SetParam(weaponXml,holderTrs.gameObject);  //holderTrs must have gameObj
+        bulletNormal.SetParam(weaponCfg, holderTrs.gameObject);  //holderTrs must have gameObj
         bulletNormal.Go(targetTrs.position - holderTrs.position);
         //bulletNormal.Go(holderTrs.forward);
         gameController.AddBulletToList(bulletNormal);
@@ -52,7 +57,7 @@ public class WeaponGun:WeaponBase
                     if (selfCarIsPlayer != otherCarIsPlayer)
                     {
                         float distance = Vector3.Distance(allCars[i].gameObject.transform.position, holderTrs.position);
-                        if (distance < minDis && weaponXml.attackRange > distance)
+                        if (distance < minDis && weaponCfg.attackRange > distance)
                         {
                             minDis = distance;
                             tempTrs = allCars[i].gameObject.transform;
@@ -77,7 +82,7 @@ public class WeaponGun:WeaponBase
     {
         holderTrs = carTrs;
         fireTimer += Time.deltaTime;
-        if (fireTimer >= weaponXml.fireRate && bulletCount > 0 && CanFire())
+        if (fireTimer >= weaponCfg.fireRate && bulletCount > 0 && CanFire())
         {
             fireTimer = 0;
             Shoot();

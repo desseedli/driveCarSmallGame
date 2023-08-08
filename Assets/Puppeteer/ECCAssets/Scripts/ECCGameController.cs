@@ -70,21 +70,17 @@ namespace EndlessCarChase
         void Awake()
 		{
             Time.timeScale = 1;
-
-            // Activate the pause canvas early on, so it can detect info about sound volume state
             //if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(true);
 
             //Get the number of the current item
             //GameObject.FindObjectOfType<ECCShop>().gameObject.SetActive(true);
             if (shopMenu)
             {
-                //Get the number of the current item
                 shopMenu.currentItem = PlayerPrefs.GetInt(shopMenu.currentPlayerprefs, shopMenu.currentItem);
-
-                // Update the player object based on the shop car we have selected
                 playerObject = shopMenu.items[shopMenu.currentItem].itemIcon.GetComponent<ECCCar>();
             }
-
+            string configpath = Application.dataPath + "/BinaryData.data";
+            ConfigManager.LoadConfig(configpath);
         }
 
 		void Start()

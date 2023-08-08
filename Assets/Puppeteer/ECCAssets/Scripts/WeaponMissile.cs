@@ -7,23 +7,28 @@ public class WeaponMissile : WeaponBase
 {
     public Transform targetTrs;
 
-    public WeaponMissile(WeaponXml _weaponXml)
+/*    public WeaponMissile(WeaponXml _weaponXml)
     {
         weaponXml = _weaponXml;
+    }*/
+
+    public WeaponMissile(WeaponCfg _weaponCfg)
+    {
+        weaponCfg = _weaponCfg;
     }
 
     public override void Shoot()
     {
         base.Shoot();
 
-        GameObject obj = gameController.dictObjectPool[weaponXml.bulletPrefab].GetObject();
+        GameObject obj = gameController.dictObjectPool[weaponCfg.bulletPrefab].GetObject();
         obj.transform.position = new Vector3(holderTrs.position.x, holderTrs.position.y + 0.25f, holderTrs.position.z);
         BulletMissileImprove bulletMissile = obj.GetComponent<BulletMissileImprove>();
         if(bulletMissile == null)
         {
             bulletMissile = obj.AddComponent<BulletMissileImprove>();
         }
-        bulletMissile.SetParam(weaponXml, holderTrs.gameObject);  //holderTrs must have gameObj
+        bulletMissile.SetParam(weaponCfg, holderTrs.gameObject);  //holderTrs must have gameObj
         bulletMissile.Go(targetTrs);
 
         gameController.AddBulletToList(bulletMissile);
@@ -51,7 +56,7 @@ public class WeaponMissile : WeaponBase
                     if(selfCarIsPlayer != otherCarIsPlayer)
                     {
                         float distance = Vector3.Distance(allCars[i].gameObject.transform.position, holderTrs.position);
-                        if (distance < minDis && weaponXml.attackRange > distance)
+                        if (distance < minDis && weaponCfg.attackRange > distance)
                         {
                             minDis = distance;
                             tempTrs = allCars[i].gameObject.transform;
@@ -75,7 +80,7 @@ public class WeaponMissile : WeaponBase
     {
         holderTrs = carTrs;
         fireTimer += Time.deltaTime;
-        if (fireTimer >= weaponXml.fireRate && bulletCount > 0 && CanFire())
+        if (fireTimer >= weaponCfg.fireRate && bulletCount > 0 && CanFire())
         {
             fireTimer = 0;
             Shoot();

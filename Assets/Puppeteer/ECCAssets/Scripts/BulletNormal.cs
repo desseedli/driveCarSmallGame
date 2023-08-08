@@ -11,17 +11,17 @@ public class BulletNormal : BulletBase
 
     private bool isMustInView = true;
     
-    public void SetParam(WeaponXml weaponXml, GameObject _shooter)
+    public void SetParam(WeaponCfg weaponCfg, GameObject _shooter)
     {
-        hurt = weaponXml.hurt;
-        hurtRange = weaponXml.hurtRange;
-        speed = weaponXml.speed;
-        maximumRange = weaponXml.maximumRange;
+        hurt = weaponCfg.hurt;
+        hurtRange = weaponCfg.hurtRange;
+        speed = weaponCfg.speed;
+        maximumRange = weaponCfg.maximumRange;
 
         shooter = _shooter;
         startPoint = shooter.transform.position;
-        prefabName = weaponXml.bulletPrefab;
-        hitEffect = weaponXml.bulletHitEffect;
+        prefabName = weaponCfg.bulletPrefab;
+        hitEffect = weaponCfg.bulletHitEffect;
     }
 
     public void Go(Vector3 _fireDir)

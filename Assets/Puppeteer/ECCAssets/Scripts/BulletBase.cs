@@ -6,7 +6,7 @@ using UnityEngine;
 public class BulletBase:MonoBehaviour
 {
     protected int hurt;
-    protected int hurtRange;
+    protected float hurtRange;
     protected float speed;
     protected float maximumRange;    //×î´óÉä³Ì
     protected GameObject shooter;

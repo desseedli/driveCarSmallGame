@@ -19,7 +19,8 @@ public class WeaponBase
     protected float speed;
     protected float maximumRange;    //×î´óÉä³Ì*/
 
-    protected WeaponXml weaponXml;
+    //protected WeaponXml weaponXml;
+    protected WeaponCfg weaponCfg;
 
     protected static ECCGameController gameController;
 
@@ -36,11 +37,11 @@ public class WeaponBase
     public virtual void Reload()
     {
         reloadTimer += Time.deltaTime;
-        if(reloadTimer >= weaponXml.reloadTime)
+        if(reloadTimer >= weaponCfg.reloadTime)
         {
             reloadTimer = 0;
-            bulletCount = weaponXml.magazineSize;
-            fireTimer = weaponXml.fireRate;
+            bulletCount = weaponCfg.magazineSize;
+            fireTimer = weaponCfg.fireRate;
         }
     }
 
