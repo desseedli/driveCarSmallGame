@@ -4,7 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba470f65-8eaf-45ec-9ba0-dde31e4a91dc" name="Default Changelist" comment="" />
+    <list default="true" id="ba470f65-8eaf-45ec-9ba0-dde31e4a91dc" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Assembly-CSharp.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DOTween.Modules.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../DOTween.Modules.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DOTweenPro.EditorScripts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../DOTweenPro.EditorScripts.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../DOTweenPro.Scripts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../DOTweenPro.Scripts.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnityCodeGen.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnityCodeGen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../testgame.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../testgame.sln" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />

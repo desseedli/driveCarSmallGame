@@ -10,20 +10,20 @@ using UnityEngine;
 
 public class WeaponCfg
 {
-    public int ID;    //		主键
-    public string name;    //		名字
-    public float attackRange;    //		索敌距离
-    public int magazineSize;    //		弹夹容量
-    public float reloadTime;    //		冷却时间
-    public float fireRate;    //		发射间隔
-    public int hurt;    //		伤害
-    public float hurtRange;    //		伤害范围
-    public float speed;    //		速度
-    public float maximumRange;    //		子弹最远飞多远
-    public string bulletPrefab;    //		子弹prefab
-    public string bulletHitEffect;    //		子弹击中prefab
+    public readonly int ID;    //		主键
+    public readonly string name;    //		名字
+    public readonly float attackRange;    //		索敌距离
+    public readonly int magazineSize;    //		弹夹容量
+    public readonly float reloadTime;    //		冷却时间
+    public readonly float fireRate;    //		发射间隔
+    public readonly int hurt;    //		伤害
+    public readonly float hurtRange;    //		伤害范围
+    public readonly float speed;    //		速度
+    public readonly float maximumRange;    //		子弹最远飞多远
+    public readonly string bulletPrefab;    //		子弹prefab
+    public readonly string bulletHitEffect;    //		子弹击中prefab
 
-    public void Deserialize (DynamicPacket packet)
+    public WeaponCfg(DynamicPacket packet)
     {
         ID = packet.PackReadInt32();
         name = packet.PackReadString();
@@ -69,8 +69,7 @@ public class WeaponCfgMgr
         int num = (int)packet.PackReadInt32();
         for (int i = 0; i < num; i++)
         {
-            WeaponCfg item = new WeaponCfg();
-            item.Deserialize(packet);
+            WeaponCfg item = new WeaponCfg(packet);
             if (mDict.ContainsKey(item.ID))
             {
                 mDict[item.ID] = item;
@@ -82,7 +81,7 @@ public class WeaponCfgMgr
         }
     }
     
-    public WeaponCfg GetDataByID(int id)
+    public WeaponCfg GetTemplateByID(int id)
     {
         if(mDict.ContainsKey(id))
         {

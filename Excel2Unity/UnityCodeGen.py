@@ -1,9 +1,9 @@
-
 import os
 from FieldFormat import FieldFormat
 from Config import KEY_MODIFIER_NAME
 from Config import EXCEL_DIR
 from Config import UnityCodeDir
+
 
 class UnityCodeGen:
 
@@ -38,10 +38,11 @@ class UnityCodeGen:
             fieldtype = table.cell(3, index).value
             fieldname = table.cell(4, index).value
             fieldvar = FieldFormat.Type2format[fieldtype][1]
-            filecontent += UnityCodeGen.Tab(1) + "public " + fieldvar + " " + fieldname + ";"
+            filecontent += UnityCodeGen.Tab(1) + "public readonly " + fieldvar + " " + fieldname + ";"
             filecontent += UnityCodeGen.Tab(1) + "//		" + fielddesc + "\n"
 
         # Deserialize函数
+        '''
         filecontent += "\n"
         filecontent += UnityCodeGen.Tab(1) + "public void Deserialize (DynamicPacket packet)\n"
         filecontent += UnityCodeGen.Tab(1) + "{\n"
@@ -53,6 +54,19 @@ class UnityCodeGen:
             fieldfunc = FieldFormat.Type2format[fieldtype][2]
             filecontent += UnityCodeGen.Tab(2) + fieldname + " = " + fieldfunc + ";\n"
 
+        filecontent += UnityCodeGen.Tab(1) + "}\n"
+        filecontent += "}\n"
+        '''
+
+        filecontent += "\n"
+        filecontent += UnityCodeGen.Tab(1) + "public " + tableclassname + "(DynamicPacket packet)\n"
+        filecontent += UnityCodeGen.Tab(1) + "{\n"
+        for index in fields:
+            ##fielddesc = table.cell(1, index).value
+            fieldtype = table.cell(3, index).value
+            fieldname = table.cell(4, index).value
+            fieldfunc = FieldFormat.Type2format[fieldtype][2]
+            filecontent += UnityCodeGen.Tab(2) + fieldname + " = " + fieldfunc + ";\n"
         filecontent += UnityCodeGen.Tab(1) + "}\n"
         filecontent += "}\n"
 
@@ -93,7 +107,9 @@ class UnityCodeGen:
         else:
             fieldtype = table.cell(3, keylist[0]).value
             keytype = FieldFormat.Type2format[fieldtype][1]
-            filecontent += UnityCodeGen.Tab(1) + "private Dictionary<{0}, {1}> mDict = new Dictionary<{0}, {1}>();\n".format(keytype, tableclassname)
+            filecontent += UnityCodeGen.Tab(
+                1) + "private Dictionary<{0}, {1}> mDict = new Dictionary<{0}, {1}>();\n".format(keytype,
+                                                                                                 tableclassname)
 
         filecontent += UnityCodeGen.Tab(1) + "\n"
         if uselist:
@@ -114,8 +130,8 @@ class UnityCodeGen:
         filecontent += UnityCodeGen.Tab(2) + "int num = (int)packet.PackReadInt32();\n"
         filecontent += UnityCodeGen.Tab(2) + "for (int i = 0; i < num; i++)\n"
         filecontent += UnityCodeGen.Tab(2) + "{\n"
-        filecontent += UnityCodeGen.Tab(3) + tableclassname + " item = new " + tableclassname + "();\n"
-        filecontent += UnityCodeGen.Tab(3) +  "item.Deserialize(packet);\n"
+        filecontent += UnityCodeGen.Tab(3) + tableclassname + " item = new " + tableclassname + "(packet);\n"
+        #filecontent += UnityCodeGen.Tab(3) + "item.Deserialize(packet);\n"
         if uselist:
             filecontent += UnityCodeGen.Tab(3) + "mList.Add(item);\n"
         else:
@@ -132,12 +148,13 @@ class UnityCodeGen:
         filecontent += UnityCodeGen.Tab(1) + "}\n"
 
         #  GetData函数
-        if keylen == 1:     # 有一个key值使用dict取值
+        if keylen == 1:  # 有一个key值使用dict取值
             fieldtype = table.cell(3, keylist[0]).value
             keytype = FieldFormat.Type2format[fieldtype][1]
             keyname = table.cell(4, keylist[0]).value
             filecontent += UnityCodeGen.Tab(1) + "\n"
-            filecontent += UnityCodeGen.Tab(1) + "public {0} GetDataBy{1}({2} {3})\n".format(tableclassname, keyname, keytype, keyname.lower())
+            filecontent += UnityCodeGen.Tab(1) + "public {0} GetTemplateBy{1}({2} {3})\n".format(tableclassname, keyname,
+                                                                                             keytype, keyname.lower())
             filecontent += UnityCodeGen.Tab(1) + "{\n"
             filecontent += UnityCodeGen.Tab(2) + "if(mDict.ContainsKey({0}))\n".format(keyname.lower())
             filecontent += UnityCodeGen.Tab(2) + "{\n"
@@ -146,7 +163,7 @@ class UnityCodeGen:
             filecontent += UnityCodeGen.Tab(2) + "\n"
             filecontent += UnityCodeGen.Tab(2) + "return null;\n"
             filecontent += UnityCodeGen.Tab(1) + "}\n"
-        elif keylen > 1:    # 有多个key值
+        elif keylen > 1:  # 有多个key值
             filecontent += UnityCodeGen.Tab(1) + "\n"
             filecontent += UnityCodeGen.Tab(1) + "public " + tableclassname + " GetDataBy"
 
@@ -243,7 +260,8 @@ class UnityCodeGen:
         filecontent += UnityCodeGen.Tab(1) + "\n"
         filecontent += UnityCodeGen.Tab(1) + "public static void LoadConfig(string cfgdatapath)\n"
         filecontent += UnityCodeGen.Tab(1) + "{\n"
-        filecontent += UnityCodeGen.Tab(2) + "FileStream fileStream = new FileStream(cfgdatapath, FileMode.Open, FileAccess.Read);\n"
+        filecontent += UnityCodeGen.Tab(
+            2) + "FileStream fileStream = new FileStream(cfgdatapath, FileMode.Open, FileAccess.Read);\n"
         filecontent += UnityCodeGen.Tab(2) + "BinaryReader binaryReader = new BinaryReader(fileStream);\n"
         filecontent += UnityCodeGen.Tab(2) + "int cnt = binaryReader.ReadInt32();\n"
         filecontent += UnityCodeGen.Tab(2) + "byte[] bytes = binaryReader.ReadBytes(cnt);\n"

@@ -7,62 +7,29 @@ using System.Collections.Generic;
 
 namespace EndlessCarChase
 {
-	/// <summary>
-	/// This script controls the game, starting it, following game progress, and finishing it with game over or victory.
-	/// </summary>
 	public class ECCGameController : MonoBehaviour 
 	{
-        [Tooltip("The camera object and the camera holder that contains it and follows the player")]
         public Transform cameraHolder;
-
-        // Unused variable that holds a minimap camera
         internal Transform miniMap;
-
-        [Tooltip("Make the camera chase the player and rotate behind it")]
         public float cameraRotate = 0;
-
-        [Tooltip("The player object assigned from the project folder or from the shop")]
         public ECCCar playerObject;
         internal float playerDirection;
-
-        [Tooltip("Make keyboard/gamepad use 8-directions controls, so instead of turning left/right, the car will move in the direction input (left,right,up,down,diagonal)")]
         public bool directionalControls = false;
-
-        [Tooltip("The ground object that follows the player position and gives a feeling of movement.")]
         public Transform groundObject;
-
-        [Tooltip("The layer which the cars move up and down along terrain. A 'groundObject' must not be assigned or hidden  in order to make this work")]
         public LayerMask groundLayer;
-        
-        [Tooltip("The speed at which the texture of the ground object moves, make the player seems as if it is moving on the ground")]
         public float groundTextureSpeed = -0.4f;
-
-        [Tooltip("How long to wait before starting the game. Ready? GO! time")]
         public float startDelay = 1;
         internal bool gameStarted = false;
-
-        [Tooltip("The effect displayed before starting the game")]
         public Transform readyGoEffect;
-        
-        [Tooltip("The score of the player")]
         public int score = 0;
-
-        [Tooltip("How many points we get per second")]
         public int scorePerSecond = 1;
-
-        [Tooltip("The score text object which displays the current score of the player")]
         public Transform scoreText;
-        
-        [Tooltip("The player prefs record of the total score we have ( not high score, but total score we collected in all games which is used as money )")]
         public string moneyPlayerPrefs = "Money";
 
         internal int highScore = 0;
 		internal int scoreMultiplier = 1;
-
-        [Tooltip("The canvas menu that displays the shop where we can unlock and select cars")]
         public ECCShop shopMenu;
 
-        [Tooltip("The steering wheel canvas that allows you to control the player by dragging the wheel left/right")]
         public Slider steeringWheel;
 
         // Various canvases for the UI
@@ -71,30 +38,21 @@ namespace EndlessCarChase
         public Transform pauseCanvas;
 		public Transform gameOverCanvas;
 
-		// Is the game over?
 		internal bool  isGameOver = false;
 		
-		// The level of the main menu that can be loaded after the game ends
 		public string mainMenuLevelName = "ECCGame";
 		
-		// Various sounds and their source
 		public AudioClip soundGameOver;
 		public string soundSourceTag = "Sound";
 		internal GameObject soundSource;
 		
-		// The button that will restart the game after game over
 		public string confirmButton = "Submit";
 		
-		// The button that pauses the game. Clicking on the pause button in the UI also pauses the game
 		public string pauseButton = "Cancel";
 		internal bool  isPaused = false;
 
-		// A general use index
 		internal int index = 0;
 
-        //public Transform slowMotionEffect; // Should dying happen in slow motion?
-
-        // Unused variables that limit the game area and make it wrap around from edge to edge
         internal Vector2 gameArea = new Vector2(10, 10);
         internal bool wrapAroundGameArea = false;
 
@@ -129,13 +87,6 @@ namespace EndlessCarChase
 
         }
 
-		/// <summary>
-		/// Start is only called once in the lifetime of the behaviour.
-		/// The difference between Awake and Start is that Start is only called if the script instance is enabled.
-		/// This allows you to delay any initialization code, until it is really needed.
-		/// Awake is always called before any Start functions.
-		/// This allows you to order initialization of scripts
-		/// </summary>
 		void Start()
 		{
             //Application.targetFrameRate = 30;
@@ -210,39 +161,27 @@ namespace EndlessCarChase
 
         public void StartGame()
         {
-            // Spawn the player car if it exists
             if (playerObject)
             {
-                // Create the player object in the scene
                 playerObject = Instantiate(playerObject);
-
-                // Set the player tag of the player so that we can refer to it 
                 playerObject.tag = "Player";
             }
 
-            // Start spawning objects in the scene
             if (GetComponent<ECCSpawnAroundObject>()) GetComponent<ECCSpawnAroundObject>().isSpawning = true;
             if (GetComponent<ECCSpawnOnPoints>()) GetComponent<ECCSpawnOnPoints>().isSpawning = true;
 
-            // Show the game UI
             if (gameCanvas) gameCanvas.gameObject.SetActive(true);
 
-            // Create the ready?GO! effect
             if (readyGoEffect) Instantiate(readyGoEffect);
 
-            // The game has started
             gameStarted = true;
 
-            // Add to the player's score every second
-            if (scorePerSecond > 0)    InvokeRepeating("ScorePerSecond", startDelay, 1);
+            if (scorePerSecond > 0)    
+                InvokeRepeating("ScorePerSecond", startDelay, 1);
 
-            // If there is an active assigned Steering Wheel slider and we are on a mobile platform, activate the slider button
             if (steeringWheel && Application.isMobilePlatform) steeringWheel.gameObject.SetActive(true);
         }
 
-        /// <summary>
-        /// Update is called every frame, if the MonoBehaviour is enabled.
-        /// </summary>
         float Remap(float inputValue, float inputMin, float inputMax, float outputMin, float outputMax)
         {
             return outputMin + (outputMax - outputMin) * (inputValue - inputMin) / (inputMax - inputMin);
@@ -250,26 +189,21 @@ namespace EndlessCarChase
 
         void Update()
 		{
-            // If the game hasn't started yet, nothing happens
             if ( gameStarted == false) return;
 
-			// Delay the start of the game
 			if ( startDelay > 0 )
 			{
 				startDelay -= Time.deltaTime;
             }
 			else
 			{
-				//If the game is over, listen for the Restart and MainMenu buttons
 				if ( isGameOver == true )
 				{
-					//The jump button restarts the game
 					if ( Input.GetButtonDown(confirmButton) )
 					{
 						Restart();
 					}
 					
-					//The pause button goes to the main menu
 					if ( Input.GetButtonDown(pauseButton) )
 					{
 						MainMenu();
@@ -277,47 +211,41 @@ namespace EndlessCarChase
 				}
 				else
 				{
-                    // If there is a player object, move it forward and turn it in the correct direction
                     if (playerObject)
                     {
-                        // If we are using mobile controls, turn left/right based on the tap side position on the screen
                         if (Application.isMobilePlatform)
                         {
-                            // If we have a steering wheel slider assigned, use it
                             if (steeringWheel && steeringWheel.gameObject.activeInHierarchy)
                             {
-                                // If we press the mouse button, check our position relative to the screen center
                                 if (Input.GetMouseButton(0))
                                 {
                                     playerDirection = steeringWheel.value;
                                 }
-                                else // Otherwise, if we didn't press anything, don't rotate and straighten up
+                                else
                                 {
                                     steeringWheel.value = playerDirection = 0;
                                 }
 
                                 steeringWheel.transform.Find("Wheel").eulerAngles = Vector3.forward * playerDirection * -100;
                             }
-                            else if (Input.GetMouseButton(0)) // If we press the mouse button, check our position relative to the screen center
+                            else if (Input.GetMouseButton(0)) 
                             {
-                                // If we are tapping on the right half of the screen, rotate to the right
                                 if (Input.mousePosition.x > Screen.width * 0.5f)
                                 {
                                     playerDirection = 1;
                                 }
-                                else // Othwerwise, rotate to the left
+                                else 
                                 {
                                     playerDirection = -1;
                                 }
                             }
-                            else // Otherwise, if we didn't press anything, don't rotate and straighten up
+                            else 
                             {
                                 playerDirection = 0;
                             }
                         }
-                        else // Otherwise, use gamepad/keyboard controls
-                        {
-                            // If we use directional controls, move in the direction input (up,down,left,right,diagonal). Otherwise, rotate left/right based on "Hoz
+                        else 
+                        {                     
                             if ( directionalControls)
                             { 
                                 playerObject.targetPosition = playerObject.transform.position + new Vector3(Input.GetAxis("Horizontal") * 5, playerObject.transform.position.y, Input.GetAxis("Vertical") * 5);
@@ -448,85 +376,54 @@ namespace EndlessCarChase
             {
                 if (cameraHolder)
                 {
-                    // Make the camera holder follow the position of the player
                     cameraHolder.position = playerObject.transform.position;
 
-                    // Make the camera holder rotate in the direction the player is moving
                     if (cameraRotate > 0) cameraHolder.eulerAngles = Vector3.up * Mathf.LerpAngle(cameraHolder.eulerAngles.y, playerObject.transform.eulerAngles.y, Time.deltaTime * cameraRotate);
                 }
 
-                // If there is a minimap, make it follow the player
                 if ( miniMap ) miniMap.position = playerObject.transform.position;
 
-                // If there is a ground object make its UV map move based on the player position ( which gives a feeling of movement on the fround )
                 if (groundObject)
                 {
-                    // Keep the ground object follwing the player position
                     groundObject.position = playerObject.transform.position;
 
-                    // Update the texture UV of the ground based on the player position
                     groundObject.GetComponent<Renderer>().material.SetTextureOffset("_MainTex", new Vector2(playerObject.transform.position.x, playerObject.transform.position.z) * groundTextureSpeed);
                 }
             }
         }
 
-        /// <summary>
-        /// Changes the health of the player by the set value. This is used to make pickup items change the player health
-        /// </summary>
-        /// <param name="changeValue"></param>
         public void ChangeHealth(float changeValue)
         {
             if (playerObject) playerObject.ChangeHealth(changeValue);
         }
 
-        /// <summary>
-        /// Change the score and update it
-        /// </summary>
-        /// <param name="changeValue">Change value</param>
         public void  ChangeScore( int changeValue )
 		{
-            // Change the score value
 			score += changeValue;
 
-            //Update the score text
             if (scoreText)
             {
                 scoreText.GetComponent<Text>().text = score.ToString();
 
-                // Play the score object animation
                 if (scoreText.GetComponent<Animation>()) scoreText.GetComponent<Animation>().Play();
             }
         }
         
-        /// <summary>
-        /// Set the score multiplier ( Get double score for hitting and destroying targets )
-        /// </summary>
         void SetScoreMultiplier( int setValue )
 		{
-			// Set the score multiplier
 			scoreMultiplier = setValue;
 		}
 
-        /// <summary>
-        /// Adds score, used to gives score per second
-        /// </summary>
         public void ScorePerSecond()
         {
             ChangeScore(scorePerSecond);
         }
-
-        /// <summary>
-        /// Pause the game, and shows the pause menu
-        /// </summary>
-        /// <param name="showMenu">If set to <c>true</c> show menu.</param>
         public void Pause(bool showMenu)
         {
             isPaused = true;
 
-            //Set timescale to 0, preventing anything from moving
             Time.timeScale = 0;
 
-            //Show the pause screen and hide the game screen
             if (showMenu == true)
             {
                 if (pauseCanvas) pauseCanvas.gameObject.SetActive(true);
@@ -534,65 +431,46 @@ namespace EndlessCarChase
             }
         }
 
-        /// <summary>
-        /// Resume the game
-        /// </summary>
         public void Unpause()
         {
             isPaused = false;
 
-            //Set timescale back to the current game speed
             Time.timeScale = 1;
 
-            //Hide the pause screen and show the game screen
             if (pauseCanvas) pauseCanvas.gameObject.SetActive(false);
             if (gameCanvas) gameCanvas.gameObject.SetActive(true);
         }
 
-        /// <summary>
-        /// Runs the game over event and shows the game over screen
-        /// </summary>
         IEnumerator GameOver(float delay)
 		{
 			isGameOver = true;
 
 			yield return new WaitForSeconds(delay);
 			
-			//Remove the pause and game screens
 			if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(false);
             if ( gameCanvas )    gameCanvas.gameObject.SetActive(false);
 
-            //Get the number of money we have
             int totalMoney = PlayerPrefs.GetInt(moneyPlayerPrefs, 0);
 
-            //Add to the number of money we collected in this game
             totalMoney += score;
 
-            //Record the number of money we have
             PlayerPrefs.SetInt(moneyPlayerPrefs, totalMoney);
 
-            //Show the game over screen
             if ( gameOverCanvas )    
 			{
-				//Show the game over screen
 				gameOverCanvas.gameObject.SetActive(true);
 				
-				//Write the score text
 				gameOverCanvas.Find("Base/TextScore").GetComponent<Text>().text = "SCORE " + score.ToString();
 				
-				//Check if we got a high score
 				if ( score > highScore )    
 				{
 					highScore = score;
 					
-					//Register the new high score
 					PlayerPrefs.SetInt(SceneManager.GetActiveScene().name + "HighScore", score);
 				}
 				
-				//Write the high sscore text
 				gameOverCanvas.Find("Base/TextHighScore").GetComponent<Text>().text = "HIGH SCORE " + highScore.ToString();
 
-				//If there is a source and a sound, play it from the source
 				if ( soundSource && soundGameOver )    
 				{
 					soundSource.GetComponent<AudioSource>().pitch = 1;
@@ -602,17 +480,11 @@ namespace EndlessCarChase
 			}
 		}
 		
-		/// <summary>
-		/// Restart the current level
-		/// </summary>
 		void  Restart()
 		{
 			SceneManager.LoadScene(SceneManager.GetActiveScene().name);
 		}
 		
-		/// <summary>
-		/// Restart the current level
-		/// </summary>
 		void  MainMenu()
 		{
 			SceneManager.LoadScene(mainMenuLevelName);
