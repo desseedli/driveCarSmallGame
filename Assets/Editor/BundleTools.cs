@@ -170,7 +170,9 @@ namespace UIFramework
                     {
                         foreach (var entry in item.entries.ToArray())
                         {
-                            string filePath = Path.Combine(Application.dataPath, "BundleResource", entry.address);
+                            //Debug.Log("11: " + entry.address);
+                            string filePath = Path.Combine(Application.dataPath, "Puppeteer/ECCAssets", entry.address);
+                            //Debug.Log("filePath: " + filePath);
                             if (string.IsNullOrEmpty(entry.AssetPath))
                             {
                                 item.RemoveAssetEntry(entry);
@@ -180,6 +182,7 @@ namespace UIFramework
                             if (File.Exists(filePath))
                             {
                                 entry.SetLabel("dlc-content", false);
+                                //Debug.Log("entry.address: " + entry.address);
                                 entry.SetAddress(GetSimpleAddresName(entry.address), false);
                             }
                             else
@@ -201,7 +204,7 @@ namespace UIFramework
 
         private static string GetSimpleAddresName(string addressName)
         {
-            return addressName.ToLower().Replace("assets/bundleresource/", "").ToLower();
+            return addressName.ToLower().Replace("assets/puppeteer/eccassets/", "").ToLower();
         }
 
         private static bool IsDefaultGroup(AddressableAssetGroup group)
