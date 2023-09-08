@@ -44,7 +44,7 @@ namespace UIFramework
 
         public UIInfo(string path, UIType type, UIMaskType maskState = UIMaskType.None)
         {
-            loadPath = "Prefabs/" + path;
+            loadPath = "Prefabs/Canvas" + path;
             uiType = type;
             maskType = maskState;
             userDatas = null;
@@ -90,12 +90,7 @@ namespace UIFramework
 
         public static UIInfo MaskUI = new UIInfo("MaskUI.prefab", UIType.ComFull);
 
-        public static UIInfo LoginUI = new UIInfo("LoginUI.prefab", UIType.ComFull);
-
         public static UIInfo MessageUI = new UIInfo("MessageUI.prefab", UIType.Tips,UIMaskType.MaskClickClose);
-
-        public static UIInfo HomeUI = new UIInfo("HomeUI.prefab",UIType.ComFull);
-
     }
 
 }

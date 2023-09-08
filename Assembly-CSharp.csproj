@@ -106,6 +106,7 @@
     <Compile Include="Assets\Scripts\DontDestroyOnload.cs" />
     <Compile Include="Assets\Scripts\AutoSingletonAttribute.cs" />
     <Compile Include="Assets\Scripts\Addressable\AddressableResLoader.cs" />
+    <Compile Include="Assets\Scripts\Config\UI.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Puppeteer\ECCAssets\weapon.xml" />

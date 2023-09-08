@@ -3,19 +3,18 @@ from FieldFormat import FieldFormat
 from Config import KEY_MODIFIER_NAME
 from Config import EXCEL_DIR
 from Config import UnityCodeDir
+import re
 
 
 class UnityCodeGen:
 
     @staticmethod
     def Tab(count):
-        return "    " * count;
+        return "    " * count
 
     # 代码生成函数
     @staticmethod
-    def Process(filepath, fields, table):
-
-        # -----------------------table cfg class-----------------------
+    def Process(filepath, fields, table, enum_res_dict=None):
         filecontent = "\n"
         filecontent += "//-----------------------------------------------\n"
         filecontent += "//              生成代码不要修改\n"
@@ -26,7 +25,17 @@ class UnityCodeGen:
         filecontent += "using System.Text;\n"
         filecontent += "using UnityEngine;\n"
         filecontent += "\n"
+        # -----------------------enum-----------------------
+        if enum_res_dict is not None:
+            for key, enum_list in enum_res_dict.items():
+                filecontent += "public enum " + str(key) + "\n"
+                filecontent += "{\n"
+                for index, value in enumerate(enum_list):
+                    filecontent += UnityCodeGen.Tab(1) + value + " = " + str(index - 1) + ",\n"
+                filecontent += "}\n"
+                filecontent += "\n"
 
+        # -----------------------table cfg class-----------------------
         tablebasename = os.path.basename(filepath)
         tablebasename = tablebasename.split(".")[0]
         tableclassname = tablebasename + "Cfg"
@@ -36,8 +45,14 @@ class UnityCodeGen:
         for index in fields:
             fielddesc = table.cell(1, index).value
             fieldtype = table.cell(3, index).value
+            if "enum" in fieldtype:
+                pattern2 = r'enum:(\w+)'
+                fieldvar = re.search(pattern2, fieldtype).group(1)
+            else:
+                fieldvar = FieldFormat.Type2format[fieldtype][1]
+
             fieldname = table.cell(4, index).value
-            fieldvar = FieldFormat.Type2format[fieldtype][1]
+
             filecontent += UnityCodeGen.Tab(1) + "public readonly " + fieldvar + " " + fieldname + ";"
             filecontent += UnityCodeGen.Tab(1) + "//		" + fielddesc + "\n"
 
@@ -65,8 +80,15 @@ class UnityCodeGen:
             ##fielddesc = table.cell(1, index).value
             fieldtype = table.cell(3, index).value
             fieldname = table.cell(4, index).value
-            fieldfunc = FieldFormat.Type2format[fieldtype][2]
-            filecontent += UnityCodeGen.Tab(2) + fieldname + " = " + fieldfunc + ";\n"
+            forceTrs = ''
+            if "enum" in fieldtype:
+                pattern2 = r'enum:(\w+)'
+                res = re.search(pattern2, fieldtype).group(1)
+                forceTrs = "(" + res + ")"
+                fieldfunc = FieldFormat.Type2format['enum'][2]
+            else:
+                fieldfunc = FieldFormat.Type2format[fieldtype][2]
+            filecontent += UnityCodeGen.Tab(2) + fieldname + " = " + forceTrs + fieldfunc + ";\n"
         filecontent += UnityCodeGen.Tab(1) + "}\n"
         filecontent += "}\n"
 
@@ -106,6 +128,8 @@ class UnityCodeGen:
             filecontent += UnityCodeGen.Tab(1) + "private List<{0}> mList = new List<{0}>();\n".format(tableclassname)
         else:
             fieldtype = table.cell(3, keylist[0]).value
+            if "enum" in fieldtype:
+                fieldtype = "enum"
             keytype = FieldFormat.Type2format[fieldtype][1]
             filecontent += UnityCodeGen.Tab(
                 1) + "private Dictionary<{0}, {1}> mDict = new Dictionary<{0}, {1}>();\n".format(keytype,
@@ -131,7 +155,7 @@ class UnityCodeGen:
         filecontent += UnityCodeGen.Tab(2) + "for (int i = 0; i < num; i++)\n"
         filecontent += UnityCodeGen.Tab(2) + "{\n"
         filecontent += UnityCodeGen.Tab(3) + tableclassname + " item = new " + tableclassname + "(packet);\n"
-        #filecontent += UnityCodeGen.Tab(3) + "item.Deserialize(packet);\n"
+        # filecontent += UnityCodeGen.Tab(3) + "item.Deserialize(packet);\n"
         if uselist:
             filecontent += UnityCodeGen.Tab(3) + "mList.Add(item);\n"
         else:
@@ -150,11 +174,15 @@ class UnityCodeGen:
         #  GetData函数
         if keylen == 1:  # 有一个key值使用dict取值
             fieldtype = table.cell(3, keylist[0]).value
+            if "enum" in fieldtype:
+                fieldtype = "enum"
             keytype = FieldFormat.Type2format[fieldtype][1]
             keyname = table.cell(4, keylist[0]).value
             filecontent += UnityCodeGen.Tab(1) + "\n"
-            filecontent += UnityCodeGen.Tab(1) + "public {0} GetTemplateBy{1}({2} {3})\n".format(tableclassname, keyname,
-                                                                                             keytype, keyname.lower())
+            filecontent += UnityCodeGen.Tab(1) + "public {0} GetTemplateBy{1}({2} {3})\n".format(tableclassname,
+                                                                                                 keyname,
+                                                                                                 keytype,
+                                                                                                 keyname.lower())
             filecontent += UnityCodeGen.Tab(1) + "{\n"
             filecontent += UnityCodeGen.Tab(2) + "if(mDict.ContainsKey({0}))\n".format(keyname.lower())
             filecontent += UnityCodeGen.Tab(2) + "{\n"
@@ -180,6 +208,8 @@ class UnityCodeGen:
             keycount = 0
             for keyindex in keylist:
                 keytype = table.cell(3, keyindex).value
+                if "enum" in keytype:
+                    keytype = "enum"
                 keytype = FieldFormat.Type2format[keytype][1]
                 keyval = table.cell(4, keyindex).value
                 keyval = keyval.lower()

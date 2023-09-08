@@ -12,6 +12,7 @@ public class ConfigManager
 {
     private static void Deserialize(DynamicPacket dynamicPacket)
     {
+        UICfgMgr.Instance.Deserialize(dynamicPacket);
         WeaponCfgMgr.Instance.Deserialize(dynamicPacket);
     }
     

@@ -8,7 +8,6 @@ from Config import UnityDataDir
 from ConfigDataGen import ConfigDataGen
 from UnityCodeGen import UnityCodeGen
 
-
 class Excel2Unity:
     # 构造函数
     def __init__(self):
@@ -45,11 +44,11 @@ class Excel2Unity:
             fields = self.FilterFieldData(table, UNITY_TABLE_FIELD_FILTER)
 
             # 数据
-            cfgbytes = ConfigDataGen.Process(fields, table)
+            cfgbytes, enum_res_dict = ConfigDataGen.Process(fields, table)
             allbytesdata += cfgbytes
 
             # 代码
-            UnityCodeGen.Process(filename, fields, table)
+            UnityCodeGen.Process(filename, fields, table, enum_res_dict)
 
         # 后处理
         ConfigDataGen.Save(allbytesdata, UnityDataDir)

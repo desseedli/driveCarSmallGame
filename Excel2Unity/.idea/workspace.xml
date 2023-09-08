@@ -7,11 +7,16 @@
     <list default="true" id="ba470f65-8eaf-45ec-9ba0-dde31e4a91dc" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/../.vs/testgame/v16/.suo" beforeDir="false" afterPath="$PROJECT_DIR$/../.vs/testgame/v16/.suo" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Assembly-CSharp.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../Assembly-CSharp.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOTween.Modules.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../DOTween.Modules.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOTweenPro.EditorScripts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../DOTweenPro.EditorScripts.csproj" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../DOTweenPro.Scripts.csproj" beforeDir="false" afterPath="$PROJECT_DIR$/../DOTweenPro.Scripts.csproj" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assets/BinaryData.data" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/BinaryData.data" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assets/Puppeteer/ECCAssets/Prefabs/Canvas/CanvasGame.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Puppeteer/ECCAssets/Prefabs/Canvas/CanvasGame.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assets/Puppeteer/ECCAssets/Prefabs/Canvas/CanvasMenu.prefab" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Puppeteer/ECCAssets/Prefabs/Canvas/CanvasMenu.prefab" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assets/Scripts/Config/ConfigManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Scripts/Config/ConfigManager.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Assets/Scripts/UI/UIPath.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Scripts/UI/UIPath.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../testgame.sln" beforeDir="false" afterPath="$PROJECT_DIR$/../testgame.sln" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ConfigDataGen.py" beforeDir="false" afterPath="$PROJECT_DIR$/ConfigDataGen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Excel2Unity.py" beforeDir="false" afterPath="$PROJECT_DIR$/Excel2Unity.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/FieldFormat.py" beforeDir="false" afterPath="$PROJECT_DIR$/FieldFormat.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnityCodeGen.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnityCodeGen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,7 +108,7 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
-    "last_opened_file_path": "F:/roclient/Tool",
+    "last_opened_file_path": "F:/testgame/Excel2Unity",
     "settings.editor.selected.configurable": "configurable.group.editor"
   }
 }]]></component>
@@ -201,6 +206,11 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="enum_res_dict" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/CodeGen.py" />
