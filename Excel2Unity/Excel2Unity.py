@@ -36,9 +36,6 @@ class Excel2Unity:
 
         # 处理每个文件
         for filename in self.mExcelFiles:
-            ##data = xlrd.open_workbook(filename)
-            ##table = data.sheets()[0]
-
             data = load_workbook(filename)
             table = data.worksheets[0]
             fields = self.FilterFieldData(table, UNITY_TABLE_FIELD_FILTER)

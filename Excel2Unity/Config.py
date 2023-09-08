@@ -1,4 +1,3 @@
-
 # --------------------------------Excel--------------------------------
 # Excel文件目录
 EXCEL_DIR = "./Excel"
@@ -25,3 +24,6 @@ UnityDataDir = "./../Assets/"
 
 # 代码生成路径
 UnityCodeDir = "./../Assets/Scripts/Config/"
+
+# UIPageGen 读取的xlsx
+UIPageLoadXlsxPath = "./Excel/UI.xlsx"
