@@ -13,7 +13,7 @@ namespace UIFramework
         Despawn
     }
 
-    public enum UIType
+/*    public enum UIType
     {
         None = 0,
         ComFull = 1,         //普通全屏界面
@@ -29,7 +29,7 @@ namespace UIFramework
         MaskClickClose = 2,         //黑色遮罩，有点击关闭UI效果
         TransparentMask = 3,       //透明遮罩，无点击关闭UI效果
         TransparentClickMask = 4,  //透明遮罩，有点击关闭UI效果
-    }
+    }*/
 
     public class UIInfo : IEquatable<UIInfo>
     {
@@ -42,11 +42,20 @@ namespace UIFramework
 
         public UIInfo() { }
 
-        public UIInfo(string path, UIType type, UIMaskType maskState = UIMaskType.None)
+/*        public UIInfo(string path, UIType type, UIMaskType maskState = UIMaskType.None)
         {
             loadPath = "Prefabs/Canvas" + path;
             uiType = type;
             maskType = maskState;
+            userDatas = null;
+        }*/
+
+        public UIInfo(UIPage uIPage)
+        {
+            UICfg uICfg = UICfgMgr.Instance.GetTemplateByID((int)uIPage);
+            loadPath = uICfg.loadPath;
+            uiType = uICfg.uiType;
+            maskType = uICfg.uiMaskType;
             userDatas = null;
         }
 
@@ -84,13 +93,13 @@ namespace UIFramework
         }
     }
 
-    public class UIPath
+/*    public class UIPath
     {
         public static UIInfo None = new UIInfo(); 
 
         public static UIInfo MaskUI = new UIInfo("MaskUI.prefab", UIType.ComFull);
 
         public static UIInfo MessageUI = new UIInfo("MessageUI.prefab", UIType.Tips,UIMaskType.MaskClickClose);
-    }
+    }*/
 
 }

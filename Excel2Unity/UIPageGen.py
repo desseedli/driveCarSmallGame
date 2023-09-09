@@ -6,7 +6,7 @@ from Config import UnityCodeDir
 
 class UIPageGen:
     def __init__(self):
-        self.mData = []
+        self.mData = {}
 
     def Tab(self, count):
         return "    " * count
@@ -27,7 +27,8 @@ class UIPageGen:
         for i in range(6, max_row + 1):
             value = table.cell(i, lock_column).value
             if value is not None:
-                self.mData.append(value)
+                key = table.cell(i, 1).value
+                self.mData[key] = value
 
         # print(self.mData)
         self.write_csharp_code_from_data()
@@ -47,8 +48,8 @@ class UIPageGen:
 
         file_content += "public enum UIPage\n"
         file_content += "{\n"
-        for index, value in enumerate(self.mData):
-            file_content += self.Tab(1) + value + " = " + str(index) + ",\n"
+        for key, value in self.mData.items():
+            file_content += self.Tab(1) + value + " = " + str(key) + ",\n"
         file_content += "}\n"
         file_content += "\n"
 

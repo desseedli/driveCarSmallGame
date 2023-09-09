@@ -10,8 +10,9 @@ using UnityEngine;
 
 public enum UIPage
 {
-    GameStart = 0,
-    GameOver = 1,
-    desseedli+osirisgu = 2,
+    GameStart = 1,
+    GameOver = 2,
+    MaskUI = 3,
+    MessageUI = 4,
 }
 

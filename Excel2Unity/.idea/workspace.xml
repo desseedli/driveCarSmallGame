@@ -5,21 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="ba470f65-8eaf-45ec-9ba0-dde31e4a91dc" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/UIPageGen.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Plugins/Demigiant/DOTween/Modules/DOTween.Modules.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Plugins/Demigiant/DOTween/Modules/DOTween.Modules.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Plugins/Demigiant/DOTweenPro/DOTweenPro.Scripts.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Plugins/Demigiant/DOTweenPro/DOTweenPro.Scripts.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Plugins/Demigiant/DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Plugins/Demigiant/DOTweenPro/Editor/DOTweenPro.EditorScripts.asmdef.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Assets/Resources/DOTweenSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../Assets/Resources/DOTweenSettings.asset" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Config.py" beforeDir="false" afterPath="$PROJECT_DIR$/Config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Excel/UI.xlsx" beforeDir="false" afterPath="$PROJECT_DIR$/Excel/UI.xlsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Excel2Unity.py" beforeDir="false" afterPath="$PROJECT_DIR$/Excel2Unity.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MacRun.sh" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UIPageGen.py" beforeDir="false" afterPath="$PROJECT_DIR$/UIPageGen.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/UnityCodeGen.py" beforeDir="false" afterPath="$PROJECT_DIR$/UnityCodeGen.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -75,9 +64,9 @@
       </list>
     </option>
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-8" />
     <option name="y" value="-8" />
@@ -108,16 +97,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "master",
-    "last_opened_file_path": "F:/driveCarSmallGame/Excel2Unity",
-    "settings.editor.selected.configurable": "configurable.group.editor"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/driveCarSmallGame/Excel2Unity&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.group.editor&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="E:\Xieliujian\UnityDemo_Excel2Unity\trunk\Excel2Unity" />

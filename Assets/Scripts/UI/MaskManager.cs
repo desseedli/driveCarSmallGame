@@ -7,7 +7,7 @@ namespace UIFramework
     public class MaskManager : UIBase
     {
         public Image m_image;
-        private UIInfo m_clickCloseUI = UIPath.None;
+        private UIInfo m_clickCloseUI = new UIInfo();
         public UIInfo clickCloseUI
         {
             get

@@ -10,20 +10,20 @@ using UnityEngine;
 
 public enum UIType
 {
-    None = -1,
-    ComFull = 0,
-    ComPopup = 1,
-    Tips = 2,
-    SystemPopup = 3,
+    None = 0,
+    ComFull = 1,
+    ComPopup = 2,
+    Tips = 3,
+    SystemPopup = 4,
 }
 
 public enum UIMaskType
 {
-    None = -1,
-    OnlyMask = 0,
-    MaskClickClose = 1,
-    TransparentMask = 2,
-    TransparentClickMask = 3,
+    None = 0,
+    OnlyMask = 1,
+    MaskClickClose = 2,
+    TransparentMask = 3,
+    TransparentClickMask = 4,
 }
 
 public class UICfg

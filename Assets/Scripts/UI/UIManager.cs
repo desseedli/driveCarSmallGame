@@ -96,7 +96,7 @@ namespace UIFramework
         /// <summary>
         /// 游戏里面通用的消息提示弹窗
         /// </summary>
-        public void ShowMessage(string message, string messageTitle = "")
+/*        public void ShowMessage(string message, string messageTitle = "")
         {
             List<string> messageData = new List<string>();
             if (!string.IsNullOrEmpty(message))
@@ -108,15 +108,26 @@ namespace UIFramework
                 messageData.Add(messageTitle);
             }
             ShowUI(UIPath.MessageUI, null, messageData.ToArray());
-        }
+        }*/
 
-        public void ShowUI(UIInfo info, Action<UIBase> showEvent = null, params object[] userData)
+/*        public void ShowUI(UIInfo info, Action<UIBase> showEvent = null, params object[] userData)
         {
             if (!CanStartLoadUI(ref info, showEvent, userData))
             {
                 return;
             }
             StartCoroutine(CoLoadUI(info,showEvent,userData));
+        }
+*/
+        public void ShowUI(UIPage uIPage,Action<UIBase> showEvent = null,params object[] userData)
+        {
+           
+            UIInfo uIInfo = new UIInfo(uIPage);
+            if (!CanStartLoadUI(ref uIInfo, showEvent, userData))
+            {
+                return;
+            }
+            StartCoroutine(CoLoadUI(uIInfo, showEvent, userData));
         }
 
         private IEnumerator CoLoadUI(UIInfo info, Action<UIBase> showEvent = null, params object[] userDatas)
@@ -318,15 +329,15 @@ namespace UIFramework
         {
             if (!m_mask)
             {
-                yield return LoadMask();
+                //yield return LoadMask();
                 if (!m_mask) yield break;
             }
-            
+
             m_mask.CloseSelfEvent -= MaskClickEvent;
             switch (loadInfo.info.maskType)
             {
                 case UIMaskType.OnlyMask:
-                    m_mask.clickCloseUI = UIPath.None;
+                    m_mask.clickCloseUI = new UIInfo();
                     m_mask.SetAlpha(); ;
                     break;
                 case UIMaskType.MaskClickClose:
@@ -335,7 +346,7 @@ namespace UIFramework
                     m_mask.SetAlpha() ;
                     break;
                 case UIMaskType.TransparentMask:
-                    m_mask.clickCloseUI = UIPath.None;
+                    m_mask.clickCloseUI = new UIInfo();
                     m_mask.SetTransparent();
                     break;
                 case UIMaskType.TransparentClickMask:
@@ -354,7 +365,7 @@ namespace UIFramework
         /// </summary>
         /// <param name="sortingOrder"></param>
         /// <param name="isClick"></param>
-        private IEnumerator LoadMask()
+/*        private IEnumerator LoadMask()
         {
             var handle = AddressableResLoader.InstantiateAsync(UIPath.MaskUI.loadPath);
             yield return handle;
@@ -370,7 +381,7 @@ namespace UIFramework
             {
                 Debug.LogError("load file failur:" + UIPath.MaskUI.loadPath);
             }
-        }
+        }*/
 
         private void HideMask()
         {

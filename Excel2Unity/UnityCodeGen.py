@@ -31,7 +31,7 @@ class UnityCodeGen:
                 filecontent += "public enum " + str(key) + "\n"
                 filecontent += "{\n"
                 for index, value in enumerate(enum_list):
-                    filecontent += UnityCodeGen.Tab(1) + value + " = " + str(index - 1) + ",\n"
+                    filecontent += UnityCodeGen.Tab(1) + value + " = " + str(index) + ",\n"
                 filecontent += "}\n"
                 filecontent += "\n"
 
