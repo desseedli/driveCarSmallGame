@@ -3,7 +3,7 @@ using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
-
+using UIFramework;
 
 namespace EndlessCarChase
 {
@@ -70,10 +70,7 @@ namespace EndlessCarChase
         void Awake()
 		{
             Time.timeScale = 1;
-            //if ( pauseCanvas )    pauseCanvas.gameObject.SetActive(true);
 
-            //Get the number of the current item
-            //GameObject.FindObjectOfType<ECCShop>().gameObject.SetActive(true);
             if (shopMenu)
             {
                 shopMenu.currentItem = PlayerPrefs.GetInt(shopMenu.currentPlayerprefs, shopMenu.currentItem);
@@ -110,7 +107,9 @@ namespace EndlessCarChase
             speedChangeTimer = speedChangeTime;
             //mouseControlRotateTime = 5f;
 
-            CreateObjectPool();
+            //CreateObjectPool();  //temp remove
+
+            UIManager.GetInstance().ShowUI(UIPage.GameMenu);
         }
 
         private void CreateObjectPool()

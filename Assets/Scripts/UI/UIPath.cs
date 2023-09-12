@@ -37,7 +37,6 @@ namespace UIFramework
         public UIType uiType;         //加载UI的类型
         public UIMaskType maskType;   //遮罩类型
         public string loadPath;       //加载的路径
-        public object[] userDatas;    //UI需要的数据
         public IEnumerator iterator;  //当前ui开启的协程
 
         public UIInfo() { }
@@ -56,7 +55,6 @@ namespace UIFramework
             loadPath = uICfg.loadPath;
             uiType = uICfg.uiType;
             maskType = uICfg.uiMaskType;
-            userDatas = null;
         }
 
         public override bool Equals(object obj)
@@ -68,8 +66,7 @@ namespace UIFramework
         {
             return !ReferenceEquals(other, null) && loadPath == other.loadPath &&
                    uiType == other.uiType &&
-                   maskType == other.maskType &&
-                   EqualityComparer<object[]>.Default.Equals(userDatas, other.userDatas);
+                   maskType == other.maskType;
         }
 
         public override int GetHashCode()
@@ -78,7 +75,6 @@ namespace UIFramework
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(loadPath);
             hashCode = hashCode * -1521134295 + uiType.GetHashCode();
             hashCode = hashCode * -1521134295 + maskType.GetHashCode();
-            hashCode = hashCode * -1521134295 + EqualityComparer<object[]>.Default.GetHashCode(userDatas);
             return hashCode;
         }
 

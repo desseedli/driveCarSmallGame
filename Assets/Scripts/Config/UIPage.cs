@@ -14,5 +14,8 @@ public enum UIPage
     GameOver = 2,
     MaskUI = 3,
     MessageUI = 4,
+    GameMenu = 5,
+    CanvasGame = 6,
+    GameShop = 7,
 }
 

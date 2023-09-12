@@ -80,7 +80,15 @@ namespace UIFramework
             base.Init();
             if (m_root == null)
             {
-                m_root = GameObject.Find("UIRoot").transform;
+                GameObject rootObj = GameObject.Find("UIRoot");
+                if (rootObj == null)
+                {
+                    m_root = new GameObject("UIRoot").transform;
+                }
+                else
+                {
+                    m_root = rootObj.transform;
+                }
             }
             m_commonLoad = InitPopupLoad<UICommonLoad>("CommonUILoad") ;
             m_popupLoad = InitPopupLoad<UIPopupLoad>("PopupUILoad");
@@ -119,20 +127,20 @@ namespace UIFramework
             StartCoroutine(CoLoadUI(info,showEvent,userData));
         }
 */
-        public void ShowUI(UIPage uIPage,Action<UIBase> showEvent = null,params object[] userData)
+        public void ShowUI(UIPage uIPage)
         {
            
             UIInfo uIInfo = new UIInfo(uIPage);
-            if (!CanStartLoadUI(ref uIInfo, showEvent, userData))
+            if (!CanStartLoadUI(ref uIInfo))
             {
                 return;
             }
-            StartCoroutine(CoLoadUI(uIInfo, showEvent, userData));
+            StartCoroutine(CoLoadUI(uIInfo));
         }
 
-        private IEnumerator CoLoadUI(UIInfo info, Action<UIBase> showEvent = null, params object[] userDatas)
+        private IEnumerator CoLoadUI(UIInfo info)
         {
-            LoadUIData data = PrePushToAllStack(info, userDatas);
+            LoadUIData data = PrePushToAllStack(info);
             //先从对象池里面加载物体，没有找到对应的物体就加载一个，加载出来要放进对象池中保存起来
             GameObject obj = PoolManager.instance.GetObject<GameObject>(info.loadPath, info.loadPath.GetAssetName(), AssetType.Prefab);
             AsyncOperationHandle<GameObject>? loader = null;
@@ -168,15 +176,15 @@ namespace UIFramework
                     ManagerMask();
                 }
 
-                IEnumerator iterator = ui.ShowUI(info.userDatas);
+                ui.PreAddAtlasAsset();
+
+                IEnumerator iterator = ui.ShowUI();
                 info.iterator = iterator;
                 yield return iterator;
 
-                showEvent?.TryInvoke(ui);
-
                 LoadUIComplete(data);
 
-                IEnumerator iterator2 = ui.LoadCompleteUI(info.userDatas);
+                IEnumerator iterator2 = ui.LoadCompleteUI();
                 info.iterator = iterator2;
                 yield return iterator2;
                 info.iterator = null;
@@ -191,10 +199,8 @@ namespace UIFramework
         /// 是否可以加载UI
         /// </summary>
         /// <param name="uiInfo"></param>
-        /// <param name="showEvent"></param>
-        /// <param name="userData"></param>
         /// <returns></returns>
-        private bool CanStartLoadUI(ref UIInfo uiInfo, Action<UIBase> showEvent = null, params object[] userDatas)
+        private bool CanStartLoadUI(ref UIInfo uiInfo)
         {
             for (int i = 0; i < m_AllUIStack.Count; i++)
             {
@@ -203,7 +209,6 @@ namespace UIFramework
                     if (m_AllUIStack[i].isLoading)
                     {
                         Debug.Log(uiInfo.loadPath + " is Loading！！！！");
-                        uiInfo.userDatas = userDatas;
                         return false;
                     }
                     else if (m_AllUIStack[i].uiBase != null)
@@ -219,14 +224,13 @@ namespace UIFramework
         /// <summary>
         /// 先把加载信息放入全局的堆栈里面
         /// </summary>
-        private LoadUIData PrePushToAllStack(UIInfo info, params object[] userDatas)
+        private LoadUIData PrePushToAllStack(UIInfo info)
         {
             LoadUIData data = new LoadUIData();
             data.info = info;
             data.isLoading = true;
             data.info.isClosed = false;
             data.layer = GetLayer(data.info.uiType);
-            info.userDatas = userDatas;
             m_AllUIStack.Add(data);
             return data;
         }

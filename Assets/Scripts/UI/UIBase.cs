@@ -2,6 +2,10 @@
 using UnityEngine;
 using UnityEngine.UI;
 using Sirenix.OdinInspector;
+using UnityEngine.AddressableAssets;
+using UnityEngine.ResourceManagement.AsyncOperations;
+using System.Collections.Generic;
+using UnityEngine.U2D;
 
 namespace UIFramework
 {
@@ -24,6 +28,11 @@ namespace UIFramework
         public delegate void BackBtnDelegate(UIInfo ui);
 
         private event BackBtnDelegate m_CloseSelfEvent;
+
+        private List<string> m_spriteAltaNames = new List<string>();
+        private List<SpriteAtlas> m_spriteAtlas = new List<SpriteAtlas>();
+
+
         //关闭此UI(其他UI不关闭)的事件 
         public event BackBtnDelegate CloseSelfEvent
         {
@@ -103,55 +112,38 @@ namespace UIFramework
                 Debug.LogError("请设置Camera摄像机类型！！！！1");
                 return;
             }
-            UICanvas.worldCamera = GameObject.Find(m_Camera).GetComponent<Camera>();
+
+            if(UICanvas.renderMode == RenderMode.WorldSpace)
+            {
+                UICanvas.worldCamera = GameObject.Find(m_Camera).GetComponent<Camera>();
+            }
         }
 
         /// <summary>
         /// 显示UI
         /// </summary>
-        public IEnumerator ShowUI(params object[] userData)
+        public IEnumerator ShowUI()
         {
-            if (userData != null && userData.Length > 0)
-            {
-                yield return BeforeShow(userData);
-                yield return InnerShow(userData);
-            }
-            else
-            {
-                yield return BeforeShow();
-                yield return InnerShow();
-            }
+            yield return BeforeShow();
+            yield return InnerShow();
         }
 
         /// <summary>
         /// 用于处理打开一个ui以后的事件，如关闭其他所有ui
         /// </summary>
         /// <returns></returns>
-        public IEnumerator LoadCompleteUI(params object[] userData)
+        public IEnumerator LoadCompleteUI()
         {
-            if (userData != null && userData.Length > 0)
-            {
-                yield return AfterShow(userData);
-            }
-            else
-            {
-                yield return AfterShow();
-            }
+            yield return AfterShow();
         }
 
-        private IEnumerator InnerShow(params object[] param)
+        private IEnumerator InnerShow()
         {
             m_status = UIStatus.Showing;
             gameObject.CustomSetActive(true);
             Raycaster.enabled = true;
-            if (param != null && param.Length > 0)
-            {
-                Show(param);
-            }
-            else
-            {
-                Show();
-            }
+
+            Show();
 
             yield break;
         }
@@ -208,11 +200,7 @@ namespace UIFramework
         #region 用于子类的继承
         protected virtual IEnumerator BeforeShow()
         {
-            yield break;
-        }
-
-        protected virtual IEnumerator BeforeShow(params object[] param)
-        {
+            yield return LoadAtlasAsset();
             yield break;
         }
 
@@ -221,17 +209,55 @@ namespace UIFramework
 
         }
 
-        protected virtual void Show(params object[] param)
+        public virtual void PreAddAtlasAsset()
         {
 
+        }
+
+        public virtual void AddAtlasAsset(string atlasPath)
+        {
+            if(!m_spriteAltaNames.Contains(atlasPath))
+            {
+                m_spriteAltaNames.Add(atlasPath);
+            }  
+        }
+
+        protected void SetImageSprite(Image img,string sprName)
+        {
+            Sprite resSpr = null;
+            for(int i = 0; i < m_spriteAtlas.Count;++i)
+            {
+/*                int sprCount = m_spriteAtlas[i].spriteCount;
+                Debug.Log(sprCount);*/
+                Sprite tempSpr = m_spriteAtlas[i].GetSprite(sprName);
+                if(tempSpr != null)
+                {
+                    resSpr = tempSpr;
+                    break;
+                }
+            }
+            img.sprite = resSpr;
+        }
+
+        private IEnumerator LoadAtlasAsset()
+        {
+            AsyncOperationHandle<IList<SpriteAtlas>> atlasHandle = Addressables.LoadAssetsAsync<SpriteAtlas>(m_spriteAltaNames, null, Addressables.MergeMode.Union);
+            yield return atlasHandle;
+            if (atlasHandle.Status == AsyncOperationStatus.Succeeded)
+            {
+                IList<SpriteAtlas> loadedAtlases = atlasHandle.Result;
+                foreach (SpriteAtlas atlas in loadedAtlases)
+                {
+                    m_spriteAtlas.Add(atlas);
+                }
+            }
+            else
+            {
+                Debug.LogError("Failed to load Atlases with labels.");
+            }
         }
 
         protected virtual IEnumerator AfterShow()
-        {
-            yield break;
-        }
-
-        protected virtual IEnumerator AfterShow(params object[] param)
         {
             yield break;
         }
