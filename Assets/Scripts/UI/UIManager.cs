@@ -127,18 +127,17 @@ namespace UIFramework
             StartCoroutine(CoLoadUI(info,showEvent,userData));
         }
 */
-        public void ShowUI(UIPage uIPage)
+        public void ShowUI(UIPage uIPage,Action<UIBase> callback)
         {
-           
             UIInfo uIInfo = new UIInfo(uIPage);
             if (!CanStartLoadUI(ref uIInfo))
             {
                 return;
             }
-            StartCoroutine(CoLoadUI(uIInfo));
+            StartCoroutine(CoLoadUI(uIInfo, callback));
         }
 
-        private IEnumerator CoLoadUI(UIInfo info)
+        private IEnumerator CoLoadUI(UIInfo info, Action<UIBase> callback)
         {
             LoadUIData data = PrePushToAllStack(info);
             //先从对象池里面加载物体，没有找到对应的物体就加载一个，加载出来要放进对象池中保存起来
@@ -177,6 +176,7 @@ namespace UIFramework
                 }
 
                 ui.PreAddAtlasAsset();
+                callback?.Invoke(ui);
 
                 IEnumerator iterator = ui.ShowUI();
                 info.iterator = iterator;

@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 using UIFramework;
+using System;
 
 namespace EndlessCarChase
 {
@@ -109,7 +110,14 @@ namespace EndlessCarChase
 
             //CreateObjectPool();  //temp remove
 
-            UIManager.GetInstance().ShowUI(UIPage.GameMenu);
+            UIManager.GetInstance().ShowUI(UIPage.GameMenu,(ui)=>
+            {
+                Action startGameAction = () =>
+                {
+                    StartGame();
+                };
+                ui.SetInfo(startGameAction);
+            });
         }
 
         private void CreateObjectPool()

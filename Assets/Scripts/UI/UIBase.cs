@@ -209,6 +209,11 @@ namespace UIFramework
 
         }
 
+        public virtual void SetInfo(params object[] objects)
+        {
+
+        }
+
         public virtual void PreAddAtlasAsset()
         {
 
